@@ -22,7 +22,7 @@ public class FileProcessorThread extends Thread {
             Files.createDirectories(Paths.get(PROCESSED_DIR));
             Files.createDirectories(Paths.get(ERROR_DIR));
 
-            // Scan input folder for CSV files
+         
             File inputFolder = new File(INPUT_DIR);
             File[] files = inputFolder.listFiles((dir, name) -> name.endsWith(".csv"));
 
@@ -53,7 +53,7 @@ public class FileProcessorThread extends Thread {
                 PreparedStatement ps = conn.prepareStatement(
                     "INSERT INTO products (sku, product_name, quantity, price) VALUES (?, ?, ?, ?)")
             ) {
-                // Skip header line (assume first row is header)
+              
                 String line = br.readLine(); 
 
                 while ((line = br.readLine()) != null) {
@@ -86,7 +86,7 @@ public class FileProcessorThread extends Thread {
             logger.severe("DB connection error for file " + file.getName() + ": " + ex.getMessage());
         }
 
-        // ✅ Move file after everything is closed
+     
         if (success) {
             moveFile(file, PROCESSED_DIR);
         } else {
@@ -105,3 +105,4 @@ public class FileProcessorThread extends Thread {
         }
     }
 }
+

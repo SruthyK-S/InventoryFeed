@@ -3,7 +3,6 @@ package com.litmus7.inventory.service;
 import java.io.*;
 import java.nio.file.*;
 import java.sql.*;
-//import java.util.logging.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,7 +11,6 @@ import com.litmus7.inventory.util.DBConnectionUtil;
 
 public class FileProcessorThread extends Thread {
 	private static final Logger logger = LogManager.getLogger("FileProcessorThread");
-//	private static final Logger logger = Logger.getLogger(FileProcessorThread.class.getName());
     
     private static final String INPUT_DIR = "input";
     private static final String PROCESSED_DIR = "processed";

@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.litmus7.inventory.util.DBConnectionUtil;
 
-public class FileProcessorThread extends Thread {
+public class FileProcessorManager extends Thread {
 	private static final Logger logger = LogManager.getLogger("FileProcessorThread");
     
     private static final String INPUT_DIR = "input";

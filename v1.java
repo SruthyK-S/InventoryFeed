@@ -3,14 +3,16 @@ package com.litmus7.inventory.service;
 import java.io.*;
 import java.nio.file.*;
 import java.sql.*;
-import java.util.logging.*;
-
+//import java.util.logging.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 import com.litmus7.inventory.util.DBConnectionUtil;
 
 public class FileProcessorThread extends Thread {
-	private static final Logger logger = Logger.getLogger(FileProcessorThread.class.getName());
+	private static final Logger logger = LogManager.getLogger("FileProcessorThread");
+//	private static final Logger logger = Logger.getLogger(FileProcessorThread.class.getName());
     
     private static final String INPUT_DIR = "input";
     private static final String PROCESSED_DIR = "processed";
@@ -22,7 +24,7 @@ public class FileProcessorThread extends Thread {
             Files.createDirectories(Paths.get(PROCESSED_DIR));
             Files.createDirectories(Paths.get(ERROR_DIR));
 
-         
+
             File inputFolder = new File(INPUT_DIR);
             File[] files = inputFolder.listFiles((dir, name) -> name.endsWith(".csv"));
 
@@ -36,7 +38,7 @@ public class FileProcessorThread extends Thread {
             }
 
         } catch (Exception e) {
-            logger.severe("Error in thread: " + e.getMessage());
+            logger.error("Error in thread: " + e.getMessage());
         }
     }
 
@@ -53,7 +55,6 @@ public class FileProcessorThread extends Thread {
                 PreparedStatement ps = conn.prepareStatement(
                     "INSERT INTO products (sku, product_name, quantity, price) VALUES (?, ?, ?, ?)")
             ) {
-              
                 String line = br.readLine(); 
 
                 while ((line = br.readLine()) != null) {
@@ -77,16 +78,16 @@ public class FileProcessorThread extends Thread {
                 try {
                     conn.rollback();
                 } catch (SQLException sqle) {
-                    logger.severe("Rollback failed for " + file.getName() + ": " + sqle.getMessage());
+                    logger.error("Rollback failed for " + file.getName() + ": " + sqle.getMessage());
                 }
-                logger.warning("Error in file " + file.getName() + " → rollback. Reason: " + e.getMessage());
+                logger.error("Error in file " + file.getName() + " → rollback. Reason: " + e.getMessage());
             }
 
         } catch (Exception ex) {
-            logger.severe("DB connection error for file " + file.getName() + ": " + ex.getMessage());
+            logger.error("DB connection error for file " + file.getName() + ": " + ex.getMessage());
         }
 
-     
+
         if (success) {
             moveFile(file, PROCESSED_DIR);
         } else {
@@ -101,7 +102,7 @@ public class FileProcessorThread extends Thread {
                     Paths.get(targetDir, file.getName()),
                     StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            logger.severe("Failed to move file " + file.getName() + ": " + e.getMessage());
+            logger.error("Failed to move file " + file.getName() + ": " + e.getMessage());
         }
     }
 }

@@ -24,12 +24,12 @@ public class FileTask implements Runnable {
         logger.info("Processing file: " + file.getName());
         boolean success = false;
 
-        try (Connection conn = DBConnectionUtil.getConnection()) {
-            conn.setAutoCommit(false);
+        try (Connection connection = DBConnectionUtil.getConnection()) {
+            connection.setAutoCommit(false);
 
             try (
                 BufferedReader br = new BufferedReader(new FileReader(file));
-                PreparedStatement ps = conn.prepareStatement(
+                PreparedStatement ps = connection.prepareStatement(
                     "INSERT INTO products (sku, product_name, quantity, price) VALUES (?, ?, ?, ?)")
             ) {
                 String line = br.readLine(); 
@@ -45,13 +45,13 @@ public class FileTask implements Runnable {
                     ps.executeUpdate();
                 }
 
-                conn.commit();
+                connection.commit();
                 success = true;
                 logger.info("File committed: " + file.getName());
 
             } catch (Exception e) {
                 try {
-                    conn.rollback();
+                    connection.rollback();
                 } catch (SQLException sqle) {
                     logger.error("Rollback failed for " + file.getName() + ": " + sqle.getMessage());
                 }

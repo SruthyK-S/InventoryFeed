@@ -43,7 +43,7 @@ public class FileProcessorManager extends Thread {
     private void processFile(File file) {
         logger.info("Processing file: " + file.getName());
 
-        boolean success = false; // track success
+        boolean success = false; 
 
         try (Connection conn = DBConnectionUtil.getConnection()) {
             conn.setAutoCommit(false);
@@ -53,7 +53,7 @@ public class FileProcessorManager extends Thread {
                 PreparedStatement ps = conn.prepareStatement(
                     "INSERT INTO products (sku, product_name, quantity, price) VALUES (?, ?, ?, ?)")
             ) {
-                String line = br.readLine(); 
+                String line = br.readLine(); //header
 
                 while ((line = br.readLine()) != null) {
                     String[] parts = line.split(",");

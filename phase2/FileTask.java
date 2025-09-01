@@ -66,7 +66,7 @@ public class FileTask implements Runnable {
             logger.error("DB connection error for file {}: {}", file.getName(), ex.getMessage());
         }
 
-        // Move file after processing
+
         if (success) {
             moveFile(PROCESSED_DIR);
         } else {

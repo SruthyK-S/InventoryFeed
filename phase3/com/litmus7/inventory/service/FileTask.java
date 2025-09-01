@@ -32,7 +32,7 @@ public class FileTask implements Runnable {
                 PreparedStatement ps = conn.prepareStatement(
                     "INSERT INTO products (sku, product_name, quantity, price) VALUES (?, ?, ?, ?)")
             ) {
-                String line = br.readLine(); // skip header
+                String line = br.readLine(); 
                 while ((line = br.readLine()) != null) {
                     String[] parts = line.split(",");
                     if (parts.length < 4) {
